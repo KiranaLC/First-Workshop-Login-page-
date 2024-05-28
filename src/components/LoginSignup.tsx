@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
-import { z } from 'zod';
+import {FormValues} from "../validators/validators"
 
-const formSchema = z.object({
-  username: z.string().min(1, 'Username is required').optional(),
-  email: z.string().email('Invalid email').min(1, 'Email is required'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string().min(1, 'Confirm Password is required').optional()
-});
-
-type FormValues = z.infer<typeof formSchema>;
 
 const LoginSignupForm: React.FC = () => {
   const [formType, setFormType] = useState<'login' | 'signup'>('login');
@@ -35,11 +27,6 @@ const LoginSignupForm: React.FC = () => {
     
   return (
     <div className="flex items-center justify-center w-full min-h-screen bg-black relative p-4 sm:p-6 lg:p-8">
-      {/* <img
-        src={""} // replace with your actual image URL
-        alt="Background"
-        className="absolute inset-0 w-full h-full"
-      /> */}
       <div className="relative p-8 bg-white shadow-md rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
         <div className="w-full mx-auto mt-6">
           <div className="mb-4 flex justify-center">
@@ -60,7 +47,7 @@ const LoginSignupForm: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {formType === 'signup' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Username</label>
+                <label className="block text-sm font-medium text-gray-700">Username <span className="text-red-600">*</span></label>
                 <input
                   {...register('username', { required: formType === 'signup' })}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
@@ -70,7 +57,7 @@ const LoginSignupForm: React.FC = () => {
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">Email <span className="text-red-600">*</span></label>
               <input
                 {...register('email', { required: true })}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
@@ -79,7 +66,7 @@ const LoginSignupForm: React.FC = () => {
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">Password <span className="text-red-600">*</span></label>
               <input
                 {...register('password', { required: true, minLength: { value: 6, message: 'Password must be at least 6 characters' } })}
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
@@ -89,7 +76,9 @@ const LoginSignupForm: React.FC = () => {
             </div>
             {formType === 'signup' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                {/* <label className="block text-sm font-medium text-gray-700">Confirm Password*</label> */}
+                <label className="block text-sm font-medium text-gray-700">Confirm Password<span className="text-red-600"> *</span></label>
+
                 <input
                   {...register('confirmPassword', {
                     required: formType === 'signup',
@@ -116,7 +105,3 @@ const LoginSignupForm: React.FC = () => {
 };
 
 export default LoginSignupForm;
-
-
-
-
