@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
-import {FormValues} from "../validators/validators"
+import {FormValues} from "../validators/validators";
+import { FormType } from './constants';
 
 
 const LoginSignupForm: React.FC = () => {
-  const [formType, setFormType] = useState<'login' | 'signup'>('login');
+  const [formType, setFormType] = useState<FormType>(FormType.Login);
   const { register, handleSubmit, getValues, control, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       username: '',
@@ -20,9 +21,9 @@ const LoginSignupForm: React.FC = () => {
     console.log(data);
   };
 
-  const isFormValid = formType === 'login'
+  const isFormValid = formType === FormType.Login
     ? formValues.email && formValues.password
-    : formType==='signup'?formValues.username && formValues.email && formValues.password && formValues.confirmPassword && formValues.password === formValues.confirmPassword:false;
+    : formType===FormType.Signup?formValues.username && formValues.email && formValues.password && formValues.confirmPassword && formValues.password === formValues.confirmPassword:false;
 
     
   return (
@@ -31,25 +32,25 @@ const LoginSignupForm: React.FC = () => {
         <div className="w-full mx-auto mt-6">
           <div className="mb-4 flex justify-center">
             <button
-              onClick={() => setFormType('login')}
-              className={`mr-10 text-lg ${formType === 'login' ? 'font-bold' : ''}`}
+              onClick={() => setFormType(FormType.Login)}
+              className={`mr-10 text-lg ${formType === FormType.Login ? 'font-bold' : ''}`}
             >
               Login
             </button>
             <button
-              onClick={() => setFormType('signup')}
-              className={`text-lg ${formType === 'signup' ? 'font-bold' : ''}`}
+              onClick={() => setFormType(FormType.Signup)}
+              className={`text-lg ${formType === FormType.Signup ? 'font-bold' : ''}`}
             >
               Signup
             </button>
           </div>
-          <h2 className="text-2xl font-bold mb-5 flex justify-center">{formType === 'login' ? 'Login' : 'Signup'}</h2>
+          <h2 className="text-2xl font-bold mb-5 flex justify-center">{formType === FormType.Login ? FormType.Login : FormType.Signup}</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {formType === 'signup' && (
+            {formType === FormType.Signup && (
               <div>
                 <label className="block text-sm font-medium text-gray-700">Username <span className="text-red-600">*</span></label>
                 <input
-                  {...register('username', { required: formType === 'signup' })}
+                  {...register('username', { required: formType === FormType.Signup})}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
                   type="text"
                 />
@@ -74,14 +75,12 @@ const LoginSignupForm: React.FC = () => {
               />
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
             </div>
-            {formType === 'signup' && (
+            {formType === FormType.Signup && (
               <div>
-                {/* <label className="block text-sm font-medium text-gray-700">Confirm Password*</label> */}
                 <label className="block text-sm font-medium text-gray-700">Confirm Password<span className="text-red-600"> *</span></label>
-
                 <input
                   {...register('confirmPassword', {
-                    required: formType === 'signup',
+                    required: formType === FormType.Signup,
                     validate: (value) => value === getValues('password') || 'Passwords do not match'
                   })}
                   className="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:outline-none focus:border-black focus:ring-1 focus:ring-black"
@@ -95,7 +94,7 @@ const LoginSignupForm: React.FC = () => {
               className={`w-full py-2 px-4 rounded-md ${isFormValid ? 'bg-black text-white' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
               disabled={!isFormValid}
             >
-              {formType === 'login' ? 'Login' : 'Signup'}
+              {formType === FormType.Login ? FormType.Login : FormType.Signup}
             </button>
           </form>
         </div>
