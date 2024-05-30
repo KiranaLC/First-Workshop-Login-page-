@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, useWatch } from 'react-hook-form';
 import {FormValues} from "../validators/validators";
-import { FormType } from './constants';
+import { FormType } from '../utils/constants';
 
 
 const LoginSignupForm: React.FC = () => {
   const [formType, setFormType] = useState<FormType>(FormType.Login);
-  const { register, handleSubmit, getValues, control, formState: { errors } } = useForm<FormValues>({
-    defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    }
-  });
+  const { register, handleSubmit, getValues, control, formState: { errors } } = useForm<FormValues>();
 
   const formValues = useWatch({ control });
 
@@ -28,7 +21,7 @@ const LoginSignupForm: React.FC = () => {
     
   return (
     <div className="flex items-center justify-center w-full min-h-screen bg-black relative p-4 sm:p-6 lg:p-8">
-      <div className="relative p-8 bg-white shadow-md rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+      <div className="relative p-8 bg-white shadow-md rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md  mx-auto">
         <div className="w-full mx-auto mt-6">
           <div className="mb-4 flex justify-center">
             <button
